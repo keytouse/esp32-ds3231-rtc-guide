@@ -231,6 +231,13 @@ The project's kt_rtc_recover() routine:
 9. Verifies OSF remains clear and that the clock continues advancing.
 10. Marks the RTC healthy only after the final checks succeed.
 
+In the inspected implementation, the first read is accepted when it is
+between 1 second behind and 20 seconds ahead of the supplied timestamp.
+Each progression check accepts an advance of 1–4 seconds over an
+approximately 1.2-second wait. These are implementation-specific
+tolerances, not universal DS3231 specifications, and should be reviewed
+if the recovery code or timing behavior changes.
+
 The project also takes care when clearing OSF so that writing the status
 register does not inadvertently clear alarm flags A1F and A2F.
 
@@ -261,8 +268,8 @@ The project's boot log on 2026-10-24 showed:
 The recovery endpoint previously returned:
 {"ok":true,"rtc":"verified"}
 
-A normal ESP32 reboot was observed to preserve the valid RTC time and
-clear OSF state.
+A normal ESP32 reboot was observed to preserve the valid RTC time while
+the OSF flag remained clear.
 
 A controlled removal and restoration of the board's main power has not yet
 been documented as a completed test. Backup-battery endurance and behavior
