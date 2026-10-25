@@ -352,6 +352,8 @@ Do not substitute a firmware build timestamp or an invented fixed date for trust
 
 ### Example 4: Gate a scheduled action (illustrative)
 
+**Important:** This is a partial gating example, not a complete production scheduler or proof that the RTC time is accurate. A successful read, a clear OSF flag, and `kt_rtc_is_ok()` do not independently establish that the clock is correct, fresh, or advancing as expected.
+
 ```c
 time_t now_utc = 0;
 uint8_t status = 0xFF;
@@ -368,7 +370,7 @@ if (err == ESP_OK &&
 }
 ```
 
-This is a reusable safety pattern, not a description of an existing PWA scheduler. Production code must also handle invalid schedules, read failures, clock progression, and recovery without accidentally repeating overdue actions.
+This is a reusable safety pattern, not a description of an existing PWA scheduler. Production code must additionally define how time validity and progression are established, validate schedule data, handle read and recovery failures, and prevent duplicate or unintended execution after resets, clock corrections, or overdue schedules. The required checks depend on the application's timing and safety requirements.
 
 ---
 
