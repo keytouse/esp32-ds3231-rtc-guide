@@ -282,6 +282,20 @@ guarantee for every DS3231 module or ESP32 design.
 
 The examples below use the project RTC API. The scheduling example is illustrative; it is not evidence that the current PWA implements a scheduler.
 
+**Before reusing these examples:** They illustrate integration patterns, not a
+complete, standalone ESP-IDF application. Examples 2–4 are code fragments;
+they require suitable surrounding function context, declarations, headers,
+error handling, and project component dependencies. Example 1 shows a
+function, but it still depends on the project's RTC API and build configuration.
+Verify all function signatures and behavior against the actual `rtc.h`,
+`rtc.c`, and driver version used by your project.
+
+In Example 3, `trusted_utc` must be a declared `time_t` value obtained from a
+trusted, current UTC time source and validated by the application before
+recovery is attempted. Do not pass an uninitialized value or substitute a
+firmware build timestamp or fixed example date. Do not assume these snippets
+compile unchanged when copied into another project.
+
 ### Example 1: Read the RTC
 
 ```c
